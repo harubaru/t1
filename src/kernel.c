@@ -1,8 +1,8 @@
-#include <tty.h>
+#include <tty/tty.h>
 #include <boot/idt.h>
 #include <boot/multiboot.h>
 #include <lib/string.h>
-#include <interrupt/pic.h>
+#include <cpu/pic.h>
 #include <mem/vmm.h>
 
 extern void gdt_init(void);

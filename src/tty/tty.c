@@ -1,4 +1,4 @@
-#include <tty.h>
+#include <tty/tty.h>
 
 #include <lib/string.h>
 #include <stdarg.h>

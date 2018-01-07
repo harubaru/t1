@@ -1,4 +1,4 @@
-#include <interrupt/pic.h>
+#include <cpu/pic.h>
 
 #define PIC_MASTER_CMD  0x0020
 #define PIC_MASTER_DATA 0x0021

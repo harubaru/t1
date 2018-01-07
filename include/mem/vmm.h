@@ -1,7 +1,6 @@
 #ifndef VMM_H
 #define VMM_H
 
-#include <tty.h>
 #include <mem/pmm.h>
 #include <stdint.h>
 

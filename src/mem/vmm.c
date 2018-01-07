@@ -66,7 +66,7 @@ void vmm_init(void *end)
 	curr_pd = kern_pd;
 
 	for (i = 0; i < 1024; i++) {
-		vmm_map((void *)(i * 0x1000));
+		(void)vmm_map((void *)(i * 0x1000));
 	}
 
 	vmm_switch_pd(kern_pd->pd);
@@ -79,19 +79,33 @@ void vmm_switch_pd(void *pd)
 	__flush_tlb((uint32_t)pd);
 }
 
-void vmm_map(void *addr)
+void *vmm_map(void *addr)
 {
 	uint32_t pd_idx = (uint32_t)addr / 0x1000;
 	uint32_t pt_idx = (uint32_t)addr / 0x400;
 
 	uint32_t tmp;
-	uint32_t *pt;
+	uint32_t *pt = curr_pd->pt[pt_idx];
 
-	if (!curr_pd->pt[pt_idx]) // if pt is null
+	if (!pt) // if pt is null
 		init_pt(pt_idx, curr_pd);
+	else if (pt[pt_idx]) // else if, page table exists and page does too.
+		return (void *)pt[pt_idx];
 
 	pt = curr_pd->pt[pt_idx];
 	pt[pt_idx] = (uint32_t)pmm_malloc_ap(sizeof(uint32_t), &tmp) | 0x3;
 
 	curr_pd->pd[pd_idx] = ((uint32_t)pt[pt_idx]) | 3; // set page directory entry
+
+	return (void *)tmp;
+}
+
+void vmm_free(uint32_t *addr)
+{
+	uint32_t *page = vmm_map(addr);
+
+	if (page) {
+		*page = 3; // set Frame to NULL
+		pmm_free(page);
+	}
 }

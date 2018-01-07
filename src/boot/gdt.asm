@@ -1,0 +1,32 @@
+CODE_SEG equ 0x08
+DATA_SEG equ 0x10
+
+section .rodata
+
+GDT32:				; 32-bit GDT (obviously)
+.null:
+	dq 0x0000000000000000	; Null descriptor
+.code:
+	dq 0x00CF9A000000FFFF	; Kernel Code descriptor
+.data:
+	dq 0x00CF92000000FFFF	; Kernel Data descriptor
+.ptr:
+	dw $ - GDT32 - 1	; Limit
+	dd GDT32		; Base
+
+section .text
+
+global gdt_init
+gdt_init:
+	lgdt [GDT32.ptr]
+	jmp CODE_SEG:.flush
+
+.flush: ; flush data segment registers
+	mov ax, DATA_SEG ; point to new data segment
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+	mov ss, ax
+
+	ret

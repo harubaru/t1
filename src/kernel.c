@@ -7,12 +7,12 @@
 
 extern void gdt_init(void);
 
-void kernel_init()
+void kernel_init(struct multiboot_info *mb)
 {
 	gdt_init();
 	idt_init();
 	pic_init();
-	vmm_init((void *)0x1000000);
+	vmm_init((void *)(mb->mem_upper + 2048));
 
 	return;
 }

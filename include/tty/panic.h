@@ -1,8 +1,10 @@
 #ifndef PANIC_H
 #define PANIC_H
 
-#include <tty.h>
+#include <tty/tty.h>
 
-#define EARLY_PANIC(x) tty_printf("%s @ %d: %s", __FILE__, __LINE__, x) 
+#define PANIC(x) panic(__FILE__, __LINE__, x);
+
+void panic(char *file, unsigned int line, char *str);
 
 #endif

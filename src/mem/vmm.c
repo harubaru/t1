@@ -12,9 +12,14 @@ page_directory_t *kern_pd = NULL;
 page_directory_t *curr_pd = NULL;
 uint32_t pt[1024] __attribute__((aligned(4096)));
 
-static void __flush_tlb(uint32_t pdaddr)
+static void __load_tlb(uint32_t pdaddr)
 {
 	asm volatile("mov %0, %%cr3" :: "r"(pdaddr));
+}
+
+static void __flush_tlb(void)
+{
+	asm volatile("movl %%cr3, %%eax; movl %%eax, %%cr3" ::: "eax", "memory");
 }
 
 static void __enable_paging(void)
@@ -76,7 +81,7 @@ void vmm_init(void *end)
 void vmm_switch_pd(void *pd)
 {
 	curr_pd = pd;
-	__flush_tlb((uint32_t)pd);
+	__load_tlb((uint32_t)pd);
 }
 
 void *vmm_map(void *addr)
@@ -96,6 +101,8 @@ void *vmm_map(void *addr)
 	pt[pt_idx] = (uint32_t)pmm_malloc_ap(sizeof(uint32_t), &tmp) | 0x3;
 
 	curr_pd->pd[pd_idx] = ((uint32_t)pt[pt_idx]) | 3; // set page directory entry
+
+	__flush_tlb();
 
 	return (void *)tmp;
 }

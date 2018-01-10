@@ -14,8 +14,6 @@ GDT32:				; 32-bit GDT (obviously)
 	dq 0x00CFFA000000FFFF	; User Code descriptor
 .udata:
 	dq 0x00CFF2000000FFFF	; User Data descriptor
-.tss:
-	dq 0x00C0F21030000068	; Task State Segment
 .ptr:
 	dw $ - GDT32 - 1	; Limit
 	dd GDT32		; Base

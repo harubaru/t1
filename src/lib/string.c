@@ -30,3 +30,13 @@ void *memset(void *dst, char val, int num)
 	return dst;
 }
 
+void *memcpy(void *dst, void *src, unsigned int n)
+{
+	char *csrc = src, *cdst = dst;
+	unsigned int i;
+
+	for (i = 0; i < n; i++)
+		cdst[i] = csrc[i];
+
+	return cdst;
+}

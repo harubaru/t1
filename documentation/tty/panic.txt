@@ -1,0 +1,13 @@
+Panic - for crashing the kernel when shit hits the ceiling.
+
+Panic functions:
+
+void panic(char *file, unsigned int line, char *str);
+	Purpose: print str and hang the system. great for debugging.
+	file = the source file the panic occurred in.
+	line = the line that this function was called on.
+	str = the string you want to print, should summarize the error while being descriptive
+	
+PANIC(x)
+	Purpose: do panic() for you without having to put __LINE__ and __FILE__ in its parameters.
+	x = the string you want to print, should summarize the error while being descriptive

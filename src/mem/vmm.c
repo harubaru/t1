@@ -10,7 +10,6 @@ typedef struct page_directory {
 
 page_directory_t *kern_pd = NULL;
 page_directory_t *curr_pd = NULL;
-uint32_t pt[1024] __attribute__((aligned(4096)));
 
 static void __load_tlb(uint32_t pdaddr)
 {

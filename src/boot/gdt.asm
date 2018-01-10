@@ -6,10 +6,14 @@ section .rodata
 GDT32:				; 32-bit GDT (obviously)
 .null:
 	dq 0x0000000000000000	; Null descriptor
-.code:
+.kcode:
 	dq 0x00CF9A000000FFFF	; Kernel Code descriptor
-.data:
+.kdata:
 	dq 0x00CF92000000FFFF	; Kernel Data descriptor
+.ucode:
+	dq 0x00CFFA000000FFFF	; User Code descriptor
+.udata:
+	dq 0x00CFF2000000FFFF	; User Data descriptor
 .ptr:
 	dw $ - GDT32 - 1	; Limit
 	dd GDT32		; Base

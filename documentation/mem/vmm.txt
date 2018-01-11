@@ -1,0 +1,21 @@
+VMM: Virtual Memory Manager - handles paging and stuff
+
+VMM Functions:
+
+void vmm_init(void *end);
+	Purpose: Initializes paging, identity maps available memory with 4KiB pages.
+	end: Pointer to the end of memory.
+
+void vmm_switch_pd(void *pd);
+	Purpose: Switches page directory, and flushes TLB with the address to the page directory.
+	pd: Pointer to the page directory to switch to.
+
+void *vmm_map(void *addr);
+	Purpose: Maps a virtual address to a physical address in memory.
+	Return Value: A physical address to the allocated page.
+	addr: Virtual address to map t a physical address.
+	
+
+void vmm_free(uint32_t *addr);
+	Purpose: Free's a page
+	addr: Physical address to the page.

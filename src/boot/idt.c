@@ -34,49 +34,56 @@ extern void exception_29();
 extern void exception_30();
 extern void exception_31();
 
+static uint32_t vectors[32] = {
+	(uint32_t) exception_0,
+	(uint32_t) exception_1,
+	(uint32_t) exception_2,
+	(uint32_t) exception_3,
+	(uint32_t) exception_4,
+	(uint32_t) exception_5,
+	(uint32_t) exception_6,
+	(uint32_t) exception_7,
+	(uint32_t) exception_8,
+	(uint32_t) exception_9,
+	(uint32_t) exception_10,
+	(uint32_t) exception_11,
+	(uint32_t) exception_12,
+	(uint32_t) exception_13,
+	(uint32_t) exception_14,
+	(uint32_t) exception_15,
+	(uint32_t) exception_16,
+	(uint32_t) exception_17,
+	(uint32_t) exception_18,
+	(uint32_t) exception_19,
+	(uint32_t) exception_20,
+	(uint32_t) exception_21,
+	(uint32_t) exception_22,
+	(uint32_t) exception_23,
+	(uint32_t) exception_24,
+	(uint32_t) exception_25,
+	(uint32_t) exception_26,
+	(uint32_t) exception_27,
+	(uint32_t) exception_28,
+	(uint32_t) exception_29,
+	(uint32_t) exception_30,
+	(uint32_t) exception_31
+};
+
 idt_entry_t idt_entries[256];
 idt_ptr_t idt_ptr;
 
 void idt_init(void)
 {
+	uint32_t i;
+
 	idt_ptr.base = (uint32_t)idt_entries;
 	idt_ptr.limit = sizeof(idt_entry_t) * 256 - 1;
 
+	for (i = 0; i < 32; i++)
+		idt_set_entry(i, vectors[i]);
+
 	memset(idt_entries, 0, sizeof(idt_entries));
 
-	idt_set_entry(0, (uint32_t)exception_0);
-	idt_set_entry(1, (uint32_t)exception_1);
-	idt_set_entry(2, (uint32_t)exception_2);
-	idt_set_entry(3, (uint32_t)exception_3);
-	idt_set_entry(4, (uint32_t)exception_4);
-	idt_set_entry(5, (uint32_t)exception_5);
-	idt_set_entry(6, (uint32_t)exception_6);
-	idt_set_entry(7, (uint32_t)exception_7);
-	idt_set_entry(8, (uint32_t)exception_8);
-	idt_set_entry(9, (uint32_t)exception_9);
-	idt_set_entry(10, (uint32_t)exception_10);
-	idt_set_entry(11, (uint32_t)exception_11);
-	idt_set_entry(12, (uint32_t)exception_12);
-	idt_set_entry(13, (uint32_t)exception_13);
-	idt_set_entry(14, (uint32_t)exception_14);
-	idt_set_entry(15, (uint32_t)exception_15);
-	idt_set_entry(16, (uint32_t)exception_16);
-	idt_set_entry(17, (uint32_t)exception_17);
-	idt_set_entry(18, (uint32_t)exception_18);
-	idt_set_entry(19, (uint32_t)exception_19);
-	idt_set_entry(20, (uint32_t)exception_20);
-	idt_set_entry(21, (uint32_t)exception_21);
-	idt_set_entry(22, (uint32_t)exception_22);
-	idt_set_entry(23, (uint32_t)exception_23);
-	idt_set_entry(24, (uint32_t)exception_24);
-	idt_set_entry(25, (uint32_t)exception_25);
-	idt_set_entry(26, (uint32_t)exception_26);
-	idt_set_entry(27, (uint32_t)exception_27);
-	idt_set_entry(28, (uint32_t)exception_28);
-	idt_set_entry(29, (uint32_t)exception_29);
-	idt_set_entry(30, (uint32_t)exception_30);
-	idt_set_entry(31, (uint32_t)exception_31);
-	
 	asm ("lidt %0" : : "m"(idt_ptr));
 }
 

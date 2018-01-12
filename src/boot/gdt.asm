@@ -1,27 +1,27 @@
 CODE_SEG equ 0x08
 DATA_SEG equ 0x10
 
-section .rodata
+section .data
 
 GDT32:				; 32-bit GDT (obviously)
-.null:
 	dq 0x0000000000000000	; Null descriptor
-.kcode:
 	dq 0x00CF9A000000FFFF	; Kernel Code descriptor
-.kdata:
 	dq 0x00CF92000000FFFF	; Kernel Data descriptor
-.ucode:
 	dq 0x00CFFA000000FFFF	; User Code descriptor
-.udata:
 	dq 0x00CFF2000000FFFF	; User Data descriptor
-.ptr:
-	dw $ - GDT32 - 1	; Limit
-	dd GDT32		; Base
+
+global GDT32_tss
+GDT32_tss:
+	dq 0x0000000000000000
+
+GDT32.ptr:
+	dw $ - GDT32 - 1
+	dd GDT32
 
 section .text
 
-global gdt_init
-gdt_init:
+global __gdt_init
+__gdt_init:
 	lgdt [GDT32.ptr]
 	jmp CODE_SEG:.flush
 
@@ -35,8 +35,9 @@ gdt_init:
 
 	ret
 
-global tss_flush
-tss_flush:
+global __tss_flush
+__tss_flush:
 	mov ax, 0x28
 	ltr ax
+
 	ret

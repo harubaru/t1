@@ -1,7 +1,14 @@
 #include <tty/tty.h>
+#include <tty/panic.h>
 #include <lib/string.h>
 
 extern void hang(void);
+
+typedef struct registers
+{
+	unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;
+	unsigned int eip, cs, eflags, useresp, ss;
+} registers_t;
 
 char *exception_codes[] = 
 {
@@ -38,13 +45,17 @@ char *exception_codes[] =
 	"reserved"
 };
 
-void common_exception_handler(unsigned int err, unsigned int code)
+void die(unsigned int fatal, unsigned int code, registers_t regs)
 {
-	if (err == 1) {
-		tty_printf("A fatal exception had occurred!\nException: %s (0x%s)\n", exception_codes[code], itoa(code, 16));		
-		hang();
-	} else if (err == 0) {
-		tty_printf("A non-fatal exception had occured!\nException: %s (0x%s)\n", exception_codes[code], itoa(code, 16));
-	}
+	if (fatal == 1) {
+		tty_printf("==== register dump ====\n");
+		tty_printf("EAX=%x EBX=%x ECX=%x EDX=%x\n", regs.eax, regs.ebx, regs.ecx, regs.edx);
+		tty_printf("ESI=%x EDI=%x\n", regs.esi, regs.edi);
+		tty_printf("ESP=%x EIP=%x EFLAGS=%x\n", regs.esp, regs.eip, regs.eflags);
+		tty_printf("=======================\n");
+		panic(exception_codes[code]);
+	} else if (fatal == 0) {
+		tty_printf("%s\n", exception_codes[code]);
+	} 
 }
 

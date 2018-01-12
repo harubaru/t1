@@ -1,5 +1,5 @@
 
-extern common_exception_handler
+extern die
 
 %macro ERR 1
 	global exception_%1
@@ -7,9 +7,12 @@ exception_%1:
 	cli
 	pusha
 
+	cld
+	lea ebp, [esp - 56]
+
 	push dword %1
 	push dword 1
-	call common_exception_handler
+	call die
 
 	add esp, 8 ; balance out stack
 
@@ -26,11 +29,10 @@ exception_%1:
 
 	push dword %1
 	push dword 0
-	call common_exception_handler
-
-	add esp, 8
+	call die
 
 	popa
+	add esp, 8
 	sti
 	iret
 %endmacro

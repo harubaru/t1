@@ -1,0 +1,11 @@
+IDT - Interrupt Descriptor Table
+
+IDT Functions:
+
+void idt_init(void);
+	Purpose: Initializes the IDT with trap gates in it.
+
+void idt_set_entry(uint32_t index, uint32_t offset);
+	Purpose: Installs an IDT entry into the IDT.
+	index: which part of the table the entry would be installed into.
+	offset: the address of the interrupt routine.

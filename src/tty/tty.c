@@ -17,6 +17,20 @@ static uint16_t entry(char c, enum tty_color fg, enum tty_color bg) {
 	return (uint16_t) uc | (uint16_t) color << 8;
 }
 
+static void scroll(void)
+{
+	uint16_t empty = entry(' ', default_fg, default_bg);
+	uint32_t i;
+
+	// scroll up
+	for (i = 0; i < (TTY_HEIGHT - 1) * TTY_WIDTH; i++)
+		*(vbuf + i) = *(vbuf + (i + 80));
+
+	// make new line empty
+	for (i = (TTY_HEIGHT - 1) * TTY_WIDTH; i == TTY_HEIGHT * TTY_WIDTH; i++)
+		*(vbuf + i) = empty;
+}
+
 void tty_init(enum tty_color fg, enum tty_color bg)
 {
 	uint32_t index;
@@ -37,18 +51,23 @@ void tty_init(enum tty_color fg, enum tty_color bg)
 
 void tty_putc(char c, enum tty_color fg, enum tty_color bg)
 {
+	uint32_t index = y * TTY_WIDTH + x;
+
 	if(c == '\n') {
 		y++;
 		x = 0;
 		return;
 	}
 
-	uint32_t index = y * TTY_WIDTH + x;
 	*(vbuf + index) = entry(c, fg, bg);
+
 	if (++x == TTY_WIDTH) {
-		x = 0;
-		if (++y == TTY_HEIGHT)
-			y = 0;
+		x = -1;
+	}
+
+	if (y == TTY_HEIGHT) {
+		y--;
+		scroll();
 	}
 }
 
@@ -80,6 +99,8 @@ void tty_printf(char *str, ...)
 				/* decimal */
 				case 'd': {
 					int c = va_arg(ap, int);
+					if (!c)
+						tty_putc('0', default_fg, default_bg);
 					tmp = itoa(c, 10);
 					tty_puts(tmp, default_fg, default_bg);
 					i += 2;

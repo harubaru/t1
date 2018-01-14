@@ -27,7 +27,7 @@ run:
 
 %.o: %.c
 	@echo "CC  $<"
-	$(CC) -m32 -Iinclude -Wall -Wextra -O0 -ffreestanding -g -c $< -o $@
+	$(CC) -m32 -Iinclude -Wall -Wextra -O0 -ffreestanding -fno-asynchronous-unwind-tables -c $< -o $@
 
 %.o: %.asm
 	@echo "AS  $<"

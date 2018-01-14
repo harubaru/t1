@@ -10,6 +10,7 @@ extern void __gdt_init(void);
 
 void kernel_init(struct multiboot_info *mb)
 {
+	tty_init(TTY_WHITE, TTY_BLACK);
 	__gdt_init();
 	tss_init();
 	idt_init();

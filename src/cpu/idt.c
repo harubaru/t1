@@ -34,7 +34,24 @@ extern void exception_29();
 extern void exception_30();
 extern void exception_31();
 
-static uint32_t vectors[32] = {
+extern void irq_0();
+extern void irq_1();
+extern void irq_2();
+extern void irq_3();
+extern void irq_4();
+extern void irq_5();
+extern void irq_6();
+extern void irq_7();
+extern void irq_8();
+extern void irq_9();
+extern void irq_10();
+extern void irq_11();
+extern void irq_12();
+extern void irq_13();
+extern void irq_14();
+extern void irq_15();
+
+static uint32_t vectors[] = {
 	(uint32_t) exception_0,
 	(uint32_t) exception_1,
 	(uint32_t) exception_2,
@@ -66,7 +83,23 @@ static uint32_t vectors[32] = {
 	(uint32_t) exception_28,
 	(uint32_t) exception_29,
 	(uint32_t) exception_30,
-	(uint32_t) exception_31
+	(uint32_t) exception_31,
+	(uint32_t) irq_0,
+	(uint32_t) irq_1,
+	(uint32_t) irq_2,
+	(uint32_t) irq_3,
+	(uint32_t) irq_4,
+	(uint32_t) irq_5,
+	(uint32_t) irq_6,
+	(uint32_t) irq_7,
+	(uint32_t) irq_8,
+	(uint32_t) irq_9,
+	(uint32_t) irq_10,
+	(uint32_t) irq_11,
+	(uint32_t) irq_12,
+	(uint32_t) irq_13,
+	(uint32_t) irq_14,
+	(uint32_t) irq_15
 };
 
 idt_entry_t idt_entries[256];

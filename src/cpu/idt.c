@@ -1,4 +1,4 @@
-#include <boot/idt.h>
+#include <cpu/idt.h>
 #include <lib/string.h>
 
 extern void exception_0();

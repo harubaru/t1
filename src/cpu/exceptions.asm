@@ -1,5 +1,8 @@
 
-extern die
+extern trap_fatal
+extern trap_warn
+
+extern hang
 
 %macro ERR 1
 	global exception_%1
@@ -11,30 +14,39 @@ exception_%1:
 	lea ebp, [esp - 56]
 
 	push dword %1
-	push dword 1
-	call die
-
-	add esp, 8 ; balance out stack
-
-	popa
-	sti
-	iret
+	call trap_fatal
 %endmacro
 
 %macro NOERR 1
 	global exception_%1
 exception_%1:
-	cli
+;	cli
 	pusha
 
+	mov ax, ds
+	push eax
+
+	mov ax, 0x10
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+
+
 	push dword %1
-	push dword 0
-	call die
+	call trap_warn
+
+	pop ebx
+	mov ds, bx
+	mov es, bx
+	mov fs, bx
+	mov gs, bx
 
 	popa
-	add esp, 8
-	sti
+	add esp, 0x8
+;	sti
 	iret
+	ret
 %endmacro
 
 NOERR 0  ; divide by zero

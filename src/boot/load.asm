@@ -19,11 +19,10 @@ global _start
 _start:
 	mov esp, stack_top
 	
-	push eax ; multiboot magic number
 	push ebx ; pointer to multiboot info struct
 
-	extern kernel_init
-	call kernel_init
+	extern init
+	call init
 
 	jmp hang
 

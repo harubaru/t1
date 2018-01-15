@@ -1,14 +1,13 @@
-#include <tty/tty.h>
-#include <boot/idt.h>
 #include <boot/multiboot.h>
-#include <boot/tss.h>
-#include <lib/string.h>
+#include <cpu/idt.h>
+#include <cpu/tss.h>
 #include <cpu/pic.h>
+#include <tty/tty.h>
 #include <mem/vmm.h>
 
 extern void __gdt_init(void);
 
-void kernel_init(struct multiboot_info *mb)
+void init(struct multiboot_info *mb)
 {
 	tty_init(TTY_WHITE, TTY_BLACK);
 	__gdt_init();

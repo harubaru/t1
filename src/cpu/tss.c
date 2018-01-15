@@ -1,4 +1,4 @@
-#include <boot/tss.h>
+#include <cpu/tss.h>
 
 #include <tty/tty.h>
 #include <lib/string.h>

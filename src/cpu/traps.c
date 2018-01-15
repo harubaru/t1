@@ -45,17 +45,18 @@ char *exception_codes[] =
 	"reserved"
 };
 
-void die(unsigned int fatal, unsigned int code, registers_t regs)
+void trap_fatal(unsigned int code, registers_t regs)
 {
-	if (fatal == 1) {
-		tty_printf("==== register dump ====\n");
-		tty_printf("EAX=%x EBX=%x ECX=%x EDX=%x\n", regs.eax, regs.ebx, regs.ecx, regs.edx);
-		tty_printf("ESI=%x EDI=%x\n", regs.esi, regs.edi);
-		tty_printf("ESP=%x EIP=%x EFLAGS=%x\n", regs.esp, regs.eip, regs.eflags);
-		tty_printf("=======================\n");
-		panic(exception_codes[code]);
-	} else if (fatal == 0) {
-		tty_printf("%s\n", exception_codes[code]);
-	} 
+	tty_printf("==== register dump ====\n");
+	tty_printf("EAX=%x EBX=%x ECX=%x EDX=%x\n", regs.eax, regs.ebx, regs.ecx, regs.edx);
+	tty_printf("ESI=%x EDI=%x\n", regs.esi, regs.edi);
+	tty_printf("ESP=%x EIP=%x EFLAGS=%x\n", regs.esp, regs.eip, regs.eflags);
+	tty_printf("=======================\n");
+	panic(exception_codes[code]);
+
 }
 
+void trap_warn(unsigned int code)
+{
+	tty_printf("%s\n", exception_codes[code]);
+}

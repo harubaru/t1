@@ -39,5 +39,5 @@ void pic_ack(uint8_t irq)
 	if (irq >= 8)
 		outb(PIC_SLAVE_CMD, PIC_ACK);
 
-	outb(PIC_SLAVE_CMD, PIC_ACK);
+	outb(PIC_MASTER_CMD, PIC_ACK);
 }

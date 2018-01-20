@@ -1,4 +1,3 @@
-#include <tty/tty.h>
 #include <cpu/pic.h>
 
 #define PIC_MASTER_CMD  0x0020
@@ -43,7 +42,6 @@ void pic_init(void)
 void pic_enable_irq(uint8_t irq)
 {
 	irq_mask = irq_mask & ~(1 << irq); // clear bit that the IRQ is on
-	tty_printf("irq_mask = %x\n", irq_mask);
 
 	if (irq >= 8) {
 		outb(PIC_SLAVE_DATA, IRQ_MASK_SLAVE);
@@ -55,7 +53,6 @@ void pic_enable_irq(uint8_t irq)
 void pic_disable_irq(uint8_t irq)
 {
 	irq_mask |= (1 << irq); // set bit that the IRQ is on
-	tty_printf("irq_mask = %x\n", irq_mask);
 
 	if (irq >= 8) {
 		outb(PIC_SLAVE_DATA, IRQ_MASK_SLAVE);

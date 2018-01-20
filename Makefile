@@ -23,6 +23,7 @@ clean:
 	rm -rf $(BINARY)
 	rm -rf ./iso/boot/kernel
 	rm -rf *.iso
+	rm -rf bochsout.txt
 
 grub-iso:
 	cp $(BINARY) ./iso/boot/kernel
@@ -31,6 +32,10 @@ grub-iso:
 qemu:
 	@echo "QEMU  $(BINARY)"
 	qemu-system-i386 -s -kernel $(BINARY)
+
+bochs:
+	@echo "BOCHS $(ISO)"
+	bochs -f bochsrc.txt
 
 %.o: %.c
 	@echo "CC  $<"

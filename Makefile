@@ -1,6 +1,7 @@
 NAME    = kernel
 VERSION = 0.00
 BINARY = $(NAME)-$(VERSION)
+ISO = $(BINARY).iso
 
 CC = gcc
 LD = ld
@@ -20,8 +21,14 @@ clean:
 	rm -rf $(OBJS)
 	@echo "RM  $(BINARY)"
 	rm -rf $(BINARY)
+	rm -rf ./iso/boot/kernel
+	rm -rf *.iso
 
-run:
+grub-iso:
+	cp $(BINARY) ./iso/boot/kernel
+	grub-mkrescue -o $(BINARY).iso ./iso 
+
+qemu:
 	@echo "QEMU  $(BINARY)"
 	qemu-system-i386 -s -kernel $(BINARY)
 

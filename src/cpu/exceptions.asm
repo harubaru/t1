@@ -2,8 +2,6 @@
 extern trap_fatal
 extern trap_warn
 
-extern hang
-
 %macro ERR 1
 	global exception_%1
 exception_%1:
@@ -20,7 +18,7 @@ exception_%1:
 %macro NOERR 1
 	global exception_%1
 exception_%1:
-;	cli
+	cli
 	pusha
 
 	mov ax, ds
@@ -44,9 +42,9 @@ exception_%1:
 
 	popa
 	add esp, 0x8
-;	sti
+	sti
+	leave
 	iret
-	ret
 %endmacro
 
 NOERR 0  ; divide by zero

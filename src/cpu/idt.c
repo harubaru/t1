@@ -102,20 +102,20 @@ static uint32_t vectors[] = {
 	(uint32_t) irq_15
 };
 
-idt_entry_t idt_entries[256];
+idt_entry_t idt_entries[256] __attribute__((aligned(8)));
 idt_ptr_t idt_ptr;
 
 void idt_init(void)
 {
 	uint32_t i;
 
+	memset(idt_entries, 0, sizeof(idt_entries));
+
 	idt_ptr.base = (uint32_t)idt_entries;
 	idt_ptr.limit = sizeof(idt_entry_t) * 256 - 1;
 
-	for (i = 0; i < 32; i++)
+	for (i = 0; i < sizeof(vectors) / sizeof(uint32_t); i++)
 		idt_set_entry(i, vectors[i]);
-
-	memset(idt_entries, 0, sizeof(idt_entries));
 
 	asm ("lidt %0" : : "m"(idt_ptr));
 }
@@ -127,6 +127,5 @@ void idt_set_entry(uint32_t index, uint32_t offset)
 	this->offset_high = (offset >> 16) & 0xFFFF;
 	this->reserved = 0;
 	this->selector = 0x08;
-	this->type = 0x8E;
+	this->type = 0x8E | 0x60;
 }
-

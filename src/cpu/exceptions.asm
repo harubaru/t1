@@ -41,9 +41,8 @@ exception_%1:
 	mov gs, bx
 
 	popa
-	add esp, 0x8
+	add esp, 0x4
 	sti
-	leave
 	iret
 %endmacro
 

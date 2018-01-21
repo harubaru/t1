@@ -6,8 +6,7 @@ extern hang
 %macro IRQ 2
 	global irq_%1
 irq_%1:
-	cli
-	mov edx, %2
+	mov edx, %1
 	jmp irq_stub
 %endmacro
 
@@ -31,24 +30,9 @@ IRQ 15, 47
 irq_stub:
 	pusha
 
-	mov ax, ds
-	push eax
-
-	mov ax, 0x10
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-
 	push edx
 	call irq
-
-	pop ebx
-	mov ds, bx
-	mov es, bx
-	mov fs, bx
-	mov gs, bx
-
+	add esp, 4
+	
 	popa
-	add esp, 0x8
 	iret

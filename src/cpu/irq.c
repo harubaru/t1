@@ -21,11 +21,12 @@ void irq_install_handler(uint32_t i, uint32_t offset)
 
 void irq(uint32_t i)
 {
-	pic_ack(i);
-
 	void (*handler)(void) = (void *)irq_handlers[i];
+
 	if (handler != 0)
 		handler();
 	else
 		tty_printf("Unhandled IRQ: %d\n", i);
+
+	pic_ack(i);
 }

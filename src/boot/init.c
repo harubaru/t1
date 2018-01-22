@@ -3,6 +3,7 @@
 #include <cpu/tss.h>
 #include <cpu/pic.h>
 #include <cpu/irq.h>
+#include <drivers/ps2/ps2kbd.h>
 #include <tty/tty.h>
 #include <mem/vmm.h>
 
@@ -17,6 +18,8 @@ void init(struct multiboot_info *mb)
 	idt_init();
 	pic_init();
 	irq_init();
+
+	ps2kbd_init();
 
 	for(;;);
 

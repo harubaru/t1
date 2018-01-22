@@ -51,14 +51,20 @@ void tty_init(enum tty_color fg, enum tty_color bg)
 
 void tty_putc(char c, enum tty_color fg, enum tty_color bg)
 {
-	uint32_t index = y * TTY_WIDTH + x;
+	uint32_t index;
 
 	if(c == '\n') {
 		y++;
 		x = 0;
 		return;
+	} else if (c == '\b') {
+		x--;
+		index = y * TTY_WIDTH + x;
+		*(vbuf + index) = entry(' ', fg, bg);
+		return;
 	}
 
+	index = y * TTY_WIDTH + x;
 	*(vbuf + index) = entry(c, fg, bg);
 
 	if (++x == TTY_WIDTH) {

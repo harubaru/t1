@@ -63,6 +63,7 @@ void tty_putc(char c, enum tty_color fg, enum tty_color bg)
 
 	if (++x == TTY_WIDTH) {
 		x = -1;
+		y++;
 	}
 
 	if (y == TTY_HEIGHT) {

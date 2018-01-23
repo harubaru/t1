@@ -1,10 +1,85 @@
-#ifndef PS2KBD_H
-#define PS2KBD_H
+#ifndef PS2_KBD_H
+#define PS2_KBD_H
 
 #include <cpu/io.h>
 #include <cpu/pic.h>
 #include <cpu/irq.h>
 
+typedef enum {
+	PS2KBD_ESC = 1,
+	PS2KBD_1 = 2,
+	PS2KBD_2 = 3,
+	PS2KBD_3 = 4,
+	PS2KBD_4 = 5,
+	PS2KBD_5 = 6,
+	PS2KBD_6 = 7,
+	PS2KBD_7 = 8,
+	PS2KBD_8 = 9,
+	PS2KBD_9 = 10,
+	PS2KBD_0 = 11,
+	PS2KBD_MINUS = 12,
+	PS2KBD_EQUAL = 13,
+	PS2KBD_BACKSPACE = 14,
+	PS2KBD_TAB = 15,
+	PS2KBD_Q = 16,
+	PS2KBD_W = 17,
+	PS2KBD_E = 18,
+	PS2KBD_R = 19,
+	PS2KBD_T = 20,
+	PS2KBD_Y = 21,
+	PS2KBD_U = 22,
+	PS2KBD_I = 23,
+	PS2KBD_O = 24,
+	PS2KBD_P = 25,
+	PS2KBD_LBRACE = 26,
+	PS2KBD_RBRACE = 27,
+	PS2KBD_ENTER = 28,
+	PS2KBD_CTRL = 29,
+	PS2KBD_A = 30,
+	PS2KBD_S = 31,
+	PS2KBD_D = 32,
+	PS2KBD_F = 33,
+	PS2KBD_G = 34,
+	PS2KBD_H = 35,
+	PS2KBD_J = 36,
+	PS2KBD_K = 37,
+	PS2KBD_L = 38,
+	PS2KBD_SEMICOLON = 39,
+	PS2KBD_APOSTROPHE = 40,
+	PS2KBD_GRAVE = 41,
+	PS2KBD_LSHIFT = 42,
+	PS2KBD_BACKSLASH = 43,
+	PS2KBD_Z = 44,
+	PS2KBD_X = 45,
+	PS2KBD_C = 46,
+	PS2KBD_V = 47,
+	PS2KBD_B = 48,
+	PS2KBD_N = 49,
+	PS2KBD_M = 50,
+	PS2KBD_COMMA = 51,
+	PS2KBD_PERIOD = 52,
+	PS2KBD_FRONTSLASH = 53,
+	PS2KBD_RSHIFT = 54,
+	PS2KBD_ALT = 56,
+	PS2KBD_SPACE = 57,
+	PS2KBD_CAPSLOCK = 58,
+	PS2KBD_F1 = 59,
+	PS2KBD_F2 = 60,
+	PS2KBD_F3 = 61,
+	PS2KBD_F4 = 62,
+	PS2KBD_F5 = 63,
+	PS2KBD_F6 = 64,
+	PS2KBD_F7 = 65,
+	PS2KBD_F8 = 66,
+	PS2KBD_F9 = 67,
+	PS2KBD_F10 = 68,
+	PS2KBD_F11 = 87,
+	PS2KBD_F12 = 88,
+	PS2KBD_RELEASED = 128
+} ps2kbd_scancode_t;
+
 void ps2kbd_init(void);
+int ps2kbd_get_scancode(void);
+char ps2kbd_get_char(void);
 
 #endif

@@ -102,6 +102,14 @@ void tty_printf(char *str, ...)
 	while (str[i] != 0) {
 		if ((str[i] == '%')) {
 			switch(str[i + 1]) {
+				/* char */
+				case 'c': {
+					int c = va_arg(ap, int);
+					if (c != 0)
+						tty_putc(c, default_fg, default_bg);
+					i += 2;
+					continue;
+				}
 				/* string */
 				case 's':
 					tmp = va_arg(ap, char*);

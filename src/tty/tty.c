@@ -58,10 +58,15 @@ void tty_putc(char c, enum tty_color fg, enum tty_color bg)
 		x = 0;
 		return;
 	} else if (c == '\b') {
-		x--;
+		if (x-- == 0)
+			x = 0;
+		
 		index = y * TTY_WIDTH + x;
 		*(vbuf + index) = entry(' ', fg, bg);
 		return;
+	} else if (c == '\t') {
+		for (index = 0; index < 8; index++)
+			tty_putc(' ', fg, bg);
 	}
 
 	index = y * TTY_WIDTH + x;

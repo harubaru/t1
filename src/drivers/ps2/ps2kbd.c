@@ -17,6 +17,7 @@ static char ps2kbd_higher_set[] = {
 };
 
 static int shift_pressed = 0;
+static int event = 0;
 
 static int curr_scancode;
 static char curr_char;
@@ -37,6 +38,7 @@ void ps2kbd_irq(void)
 	uint8_t status = inb(0x64);
 
 	if (status & 1) {
+		event = 1;
 		curr_scancode = inb(0x60);
 
 		if (curr_scancode < 128) { // pressed
@@ -53,11 +55,17 @@ void ps2kbd_irq(void)
 
 int ps2kbd_get_scancode(void)
 {
+	while (event != 1);
+	event = 0;
+	
 	return curr_scancode;
 }
 
 char ps2kbd_get_char(void)
 {
+	while (event != 1);
+	event = 0;
+	
 	return curr_char;
 }
 

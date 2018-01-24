@@ -21,7 +21,5 @@ void init(struct multiboot_info *mb)
 
 	ps2kbd_init();
 
-	for(;;);
-
 	return;
 }

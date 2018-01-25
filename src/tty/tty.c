@@ -51,26 +51,27 @@ void tty_init(enum tty_color fg, enum tty_color bg)
 
 void tty_putc(char c, enum tty_color fg, enum tty_color bg)
 {
-	uint32_t index;
+	uint32_t i;
 
-	if(c == '\n') {
+	switch (c) {
+	case '\n':
 		y++;
 		x = 0;
 		return;
-	} else if (c == '\b') {
+	case '\b':
 		if (x-- == 0)
 			x = 0;
 		
-		index = y * TTY_WIDTH + x;
-		*(vbuf + index) = entry(' ', fg, bg);
+		i = y * TTY_WIDTH + x;
+		*(vbuf + i) = entry(' ', fg, bg);
 		return;
-	} else if (c == '\t') {
-		for (index = 0; index < 8; index++)
+	case '\t':
+		for (i = 0; i < 8; i++)
 			tty_putc(' ', fg, bg);
 	}
 
-	index = y * TTY_WIDTH + x;
-	*(vbuf + index) = entry(c, fg, bg);
+	i = y * TTY_WIDTH + x;
+	*(vbuf + i) = entry(c, fg, bg);
 
 	if (++x == TTY_WIDTH) {
 		x = -1;

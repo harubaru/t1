@@ -31,7 +31,7 @@ grub-iso:
 
 qemu:
 	@echo "QEMU  $(BINARY)"
-	qemu-system-i386 -s -kernel $(BINARY)
+	qemu-system-i386 -m 32M -s -kernel $(BINARY)
 
 bochs:
 	@echo "BOCHS $(ISO)"

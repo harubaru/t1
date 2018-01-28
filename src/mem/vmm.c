@@ -72,6 +72,7 @@ static void init_pt(uint32_t idx, page_directory_t *pd)
 
 void vmm_init(void *end)
 {
+	uint32_t megs = (uint32_t)end / (1024 * 1024);
 	uint32_t i;
 
 	pmm_init(&__end_symbol, end);
@@ -79,8 +80,13 @@ void vmm_init(void *end)
 	kern_pd = vmm_init_pd();
 	curr_pd = kern_pd;
 
+<<<<<<< HEAD
 	for (i = 0; i < (uint32_t)end; i++)
 		vmm_map((void *)(i));
+=======
+	for (i = 0; i < 1024 * megs + 2; i++)
+		(void)vmm_map((void *)(i * 0x1000));
+>>>>>>> bde057497bae529c6b9b1ca8b3f571410ceec74d
 
 	vmm_switch_pd(kern_pd->pd);
 	__enable_paging();

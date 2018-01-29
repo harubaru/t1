@@ -7,6 +7,7 @@
 #include <drivers/ps2/ps2kbd.h>
 #include <tty/tty.h>
 #include <mem/vmm.h>
+#include <sched/sched.h>
 
 extern void __gdt_init(void);
 
@@ -21,6 +22,10 @@ void init(struct multiboot_info *mb)
 	irq_init();
 	pit_init();
 	ps2kbd_init();
+
+	sched_init();
+
+	for(;;);
 
 	return;
 }

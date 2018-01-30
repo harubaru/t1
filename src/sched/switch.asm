@@ -12,8 +12,6 @@ context_switch:
 	mov es, ax
 	mov fs, ax
 	mov gs, ax
-	
-	push 0x10 ; ds
 
 	mov eax, [ebp + 24]
 	push eax ; esp

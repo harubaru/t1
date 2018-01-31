@@ -20,7 +20,6 @@ void init(struct multiboot_info *mb)
 	idt_init();
 	pic_init();
 	irq_init();
-	pit_init();
 	ps2kbd_init();
 
 	sched_init();

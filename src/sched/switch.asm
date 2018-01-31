@@ -13,9 +13,6 @@ context_switch:
 	mov fs, ax
 	mov gs, ax
 
-	mov eax, [ebp + 24]
-	push eax ; esp
-
 	sti
 	pushfd ; eflags
 	push 0x08 ; cs

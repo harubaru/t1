@@ -14,13 +14,14 @@ void idle(void)
 
 void sched_irq(void)
 {
+	asm volatile ("cli");
 	jiffies++;
 	pic_ack(0);
 	if (!(jiffies % 10)) {
 		jiffies = 0;
 		context_switch(&curr->next->regs);
 	}
-	asm volatile ("leave; iret");
+	asm volatile ("sti; leave; iret");
 }
 
 void sched_init(void)
@@ -30,7 +31,7 @@ void sched_init(void)
 
 	idt_set_entry(32, (uint32_t)sched_irq);
 	pic_enable_irq(0);
-	pit_set_phase(1000);
+	pit_set_phase(PIT_HZ / 1000);
 }
 
 uint32_t sched_last_pid(void)

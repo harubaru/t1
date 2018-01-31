@@ -18,7 +18,6 @@ void sched_irq(void)
 	pic_ack(0);
 	if (!(jiffies % 10)) {
 		jiffies = 0;
-		tty_printf("%d ", jiffies);
 		context_switch(&curr->next->regs);
 	}
 	asm volatile ("leave; iret");

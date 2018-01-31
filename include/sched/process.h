@@ -18,7 +18,7 @@ typedef struct process {
 	char *name;
 } process_t;
 
-process_t process_init(void (*entry_point)(void), char *name);
-void process_kill(process_t proc);
+process_t *process_init(void (*entry_point)(void), char *name);
+void process_kill(process_t *proc);
 
 #endif

@@ -1,3 +1,17 @@
+global context_save
+context_save:
+	pusha ; 32
+
+	mov eax, [esp + 36]
+	mov [eax + 4], ebx
+	mov [eax + 8], ecx
+	mov [eax + 12], edx
+	mov [eax + 16], esi
+	mov [eax + 20], edi
+
+	popa
+	ret
+
 global context_switch
 context_switch:
 	mov ebp, [esp + 4]

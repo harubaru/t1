@@ -1,5 +1,6 @@
 #include <sched/sched.h>
 
+extern void context_save(process_regs_t *regs);
 extern void context_switch(process_regs_t *regs);
 
 static process_t *curr;
@@ -14,16 +15,22 @@ static uint32_t jiffies = 0;
 
 void idle(void)
 {
-	for (;;)
-		asm volatile ("hlt");
+idle_loop:
+	asm volatile ("nop");
+	goto idle_loop;
 }
 
 void sched_irq(void)
 {
 	asm volatile ("cli");
-	jiffies++;
+	asm volatile ("add $12, %esp");
+
+	context_save(&curr->regs);
 	pic_ack(0);
+	jiffies++;
+
 	if (!(jiffies % TIME_SLICE)) {
+		asm volatile ("movl (%%esp), %0" : "=r"(curr->regs.eip));
 		jiffies = 0;
 		curr = curr->next;
 		context_switch(&curr->regs);
@@ -39,6 +46,8 @@ void sched_init(void)
 	idt_set_entry(32, (uint32_t)sched_irq);
 	pic_enable_irq(0);
 	pit_set_phase(PIT_HZ / 1000);
+
+	idle();
 }
 
 uint32_t sched_last_pid(void)

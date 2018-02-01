@@ -6,6 +6,12 @@ static process_t *curr;
 static uint32_t last_pid = 0;
 static uint32_t jiffies = 0;
 
+/*
+ * The amount of jiffies a process gets
+ * before the scheduler switches it to curr->next
+ */
+#define TIME_SLICE 10
+
 void idle(void)
 {
 	for (;;)
@@ -17,9 +23,10 @@ void sched_irq(void)
 	asm volatile ("cli");
 	jiffies++;
 	pic_ack(0);
-	if (!(jiffies % 10)) {
+	if (!(jiffies % TIME_SLICE)) {
 		jiffies = 0;
-		context_switch(&curr->next->regs);
+		curr = curr->next;
+		context_switch(&curr->regs);
 	}
 	asm volatile ("sti; leave; iret");
 }

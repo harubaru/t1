@@ -7,9 +7,9 @@ extern trap_warn
 exception_%1:
 	cli
 	pusha
-
-	cld
-	lea ebp, [esp - 56]
+	pushfd
+	mov eax, [esp + 36]
+	push eax
 
 	push dword %1
 	call trap_fatal

@@ -6,8 +6,7 @@ extern void hang(void);
 
 typedef struct registers
 {
-	unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;
-	unsigned int eip, cs, eflags, useresp, ss;
+	unsigned int eip, eflags, edi, esi, ebp, esp, ebx, edx, ecx, eax;
 } registers_t;
 
 char *exception_codes[] = 
@@ -47,13 +46,12 @@ char *exception_codes[] =
 
 void trap_fatal(unsigned int code, registers_t regs)
 {
-	tty_printf("==== register dump ====\n");
+	tty_printf("\n==== register dump ====\n");
 	tty_printf("EAX=%x EBX=%x ECX=%x EDX=%x\n", regs.eax, regs.ebx, regs.ecx, regs.edx);
 	tty_printf("ESI=%x EDI=%x\n", regs.esi, regs.edi);
 	tty_printf("ESP=%x EIP=%x EFLAGS=%x\n", regs.esp, regs.eip, regs.eflags);
 	tty_printf("=======================\n");
 	panic(exception_codes[code]);
-
 }
 
 void trap_warn(unsigned int code)

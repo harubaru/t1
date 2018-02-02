@@ -2,6 +2,7 @@
 
 extern void context_save(process_regs_t *regs);
 extern void context_switch(process_regs_t *regs);
+extern void context_iret(uint32_t ret);
 
 static process_t *curr;
 static uint32_t last_pid = 0;
@@ -11,31 +12,32 @@ static uint32_t jiffies = 0;
  * The amount of jiffies a process gets
  * before the scheduler switches it to curr->next
  */
-#define TIME_SLICE 10
+#define TIME_SLICE 100
 
 void idle(void)
 {
 idle_loop:
-	asm volatile ("nop");
+	asm volatile ("hlt");
 	goto idle_loop;
 }
 
 void sched_irq(void)
 {
 	asm volatile ("cli");
-	asm volatile ("add $12, %esp");
 
 	context_save(&curr->regs);
 	pic_ack(0);
 	jiffies++;
 
-	if (!(jiffies % TIME_SLICE)) {
-		asm volatile ("movl (%%esp), %0" : "=r"(curr->regs.eip));
+	asm volatile ("movl 12(%%esp), %0" : "=r"(curr->regs.eip));
+
+	if (jiffies == TIME_SLICE) {
 		jiffies = 0;
 		curr = curr->next;
+		asm ("addl $0x38, %esp");
 		context_switch(&curr->regs);
 	}
-	asm volatile ("sti; leave; iret");
+	asm ("leave; iret");
 }
 
 void sched_init(void)

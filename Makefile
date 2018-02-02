@@ -1,6 +1,8 @@
 NAME    = kernel
 VERSION = 0.00
-BINARY = $(NAME)-$(VERSION)
+BINDIR = bin
+BINARYNAME = $(NAME)-$(VERSION)
+BINARY = $(BINDIR)/$(BINARYNAME)
 ISO = $(BINARY).iso
 
 CC = gcc
@@ -12,7 +14,9 @@ AS_OBJS := $(patsubst %.asm, %.o, $(shell find . -name '*.asm'))
 
 OBJS = $(AS_OBJS) $(CC_OBJS)
 
-all: $(OBJS)
+all: $(BINARY)
+
+$(BINARY): $(OBJS)
 	@echo "LD $(BINARY)"
 	$(LD) -melf_i386 -T memmap -nostdlib -o $(BINARY) $(OBJS)
 
@@ -21,19 +25,22 @@ clean:
 	rm -rf $(OBJS)
 	@echo "RM  $(BINARY)"
 	rm -rf $(BINARY)
-	rm -rf ./iso/boot/kernel
-	rm -rf *.iso
+	rm -rf $(ISO)
+	rm -rf ./iso/boot/$(BINARYNAME)
 	rm -rf bochsout.txt
 
-grub-iso:
-	cp $(BINARY) ./iso/boot/kernel
-	grub-mkrescue -o $(BINARY).iso ./iso 
+grub-iso: $(ISO)
 
-qemu:
+$(ISO): $(BINARY)
+	cp $(BINARY) ./iso/boot/$(BINARYNAME)
+	grub-mkrescue -o $(ISO) ./iso
+
+
+qemu: $(BINARY)
 	@echo "QEMU  $(BINARY)"
 	qemu-system-i386 -m 128M -s -kernel $(BINARY)
 
-bochs:
+bochs: $(ISO)
 	@echo "BOCHS $(ISO)"
 	bochs -f bochsrc.txt
 

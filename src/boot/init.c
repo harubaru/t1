@@ -22,7 +22,10 @@ void init(struct multiboot_info *mb)
 	irq_init();
 	ps2kbd_init();
 
-	sched_init();
+	/*
+	 * TODO: Make the scheduler better!
+	 */
+//	sched_init();
 
 	for(;;);
 

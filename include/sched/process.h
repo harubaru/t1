@@ -3,7 +3,6 @@
 
 #include <mem/vmm.h>
 #include <lib/string.h>
-#include <sched/sched.h>
 
 typedef struct process_regs {
 	//       0    4    8    12   16   20   24   28   32   36      40

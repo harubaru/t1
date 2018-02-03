@@ -1,4 +1,5 @@
 #include <sched/process.h>
+#include <sched/sched.h>
 
 process_regs_t curr_regs;
 

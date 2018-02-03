@@ -7,7 +7,6 @@
 #include <drivers/ps2/ps2kbd.h>
 #include <tty/tty.h>
 #include <mem/vmm.h>
-#include <sched/sched.h>
 
 extern void __gdt_init(void);
 
@@ -21,11 +20,6 @@ void init(struct multiboot_info *mb)
 	pic_init();
 	irq_init();
 	ps2kbd_init();
-
-	/*
-	 * TODO: Make the scheduler better!
-	 */
-//	sched_init();
 
 	for(;;);
 

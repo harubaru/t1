@@ -1,7 +1,4 @@
 #include <sched/process.h>
-#include <sched/sched.h>
-
-process_regs_t curr_regs;
 
 process_t *process_init(void (*entry_point)(void), char *name)
 {
@@ -21,7 +18,7 @@ process_t *process_init(void (*entry_point)(void), char *name)
 	proc->regs.ebp = proc->regs.esp + 0x1000;
 	proc->regs.eip = (uint32_t)entry_point;
 	proc->regs.cr3 = (uint32_t)proc->pd->pd;
-	proc->pid = sched_last_pid();
+//	proc->pid = sched_last_pid();
 	proc->name = name;
 
 	return proc;

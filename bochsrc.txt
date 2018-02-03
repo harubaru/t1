@@ -2,7 +2,7 @@ megs: 64
 romimage: file=/usr/share/bochs/BIOS-bochs-latest, address=0xfffe0000
 vgaromimage: file=/usr/share/bochs/VGABIOS-lgpl-latest
 ata0: enabled=1, ioaddr1=0x1f0, ioaddr2=0x3f0, irq=14
-ata0-master: type=cdrom, path="kernel-0.00.iso", status=inserted
+ata0-master: type=cdrom, path="bin/kernel-0.00.iso", status=inserted
 boot: cdrom
 log: bochsout.txt
 mouse: enabled=0

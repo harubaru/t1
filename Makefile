@@ -32,7 +32,7 @@ clean:
 grub-iso: $(ISO)
 
 $(ISO): $(BINARY)
-	cp $(BINARY) ./iso/boot/$(BINARYNAME)
+	cp $(BINARY) ./iso/boot/kernel
 	grub-mkrescue -o $(ISO) ./iso
 
 
@@ -43,6 +43,7 @@ qemu: $(BINARY)
 bochs: $(ISO)
 	@echo "BOCHS $(ISO)"
 	bochs -f bochsrc.txt
+	mv bochsout.txt $(BINDIR)
 
 %.o: %.c
 	@echo "CC  $<"

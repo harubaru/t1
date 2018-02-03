@@ -46,10 +46,30 @@ void sched_init(void)
 	curr->next = curr;
 
 	idt_set_entry(32, (uint32_t)sched_irq);
-	pic_enable_irq(0);
+	pic_enable_irq(0); 
 	pit_set_phase(PIT_HZ / 1000);
 
 	idle();
+}
+
+void sched_add_process(process_t *proc)
+{
+	proc->next = curr->next;
+	curr->next = proc;
+}
+
+void sched_remove_process(process_t *proc)
+{
+	process_t *i = curr;
+
+	while (1) {
+		if ((i->next == proc) || (i == proc)) {
+			i->next = proc->next;
+			break;
+		} else {
+			i = i->next;
+		}
+	}
 }
 
 uint32_t sched_last_pid(void)

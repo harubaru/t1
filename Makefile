@@ -29,6 +29,9 @@ clean:
 	rm -rf ./iso/boot/$(BINARYNAME)
 	rm -rf bochsout.txt
 
+disasm: $(BINARY)
+	objdump -D $(BINARY) > $(BINDIR)/disasm.txt
+
 grub-iso: $(ISO)
 
 $(ISO): $(BINARY)

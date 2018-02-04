@@ -31,7 +31,7 @@ page_directory_t *vmm_init_pd(void)
 	pd->pd = pmm_malloc_a(1024 * sizeof(uint32_t));
 
 	for (i = 0; i < 1024; i++)
-		pd->pd[i] = 0x3;
+		pd->pd[i] = 0x2;
 
 	for (i = 0; i < 1024; i++)
 		pd->pt[i] = NULL;
@@ -79,8 +79,11 @@ void vmm_init(void *end)
 	kern_pd = vmm_init_pd();
 	curr_pd = kern_pd;
 
-	for (i = 0; i < (uint32_t)end; i++)
-		vmm_map((void *)(i));
+	// map 4 megs of memory
+	while (i < 0x4000) {
+		(void)vmm_map((void *)i);
+		i += 0x1000;
+	}
 
 	vmm_switch_pd(kern_pd->pd);
 	__enable_paging();

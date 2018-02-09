@@ -30,7 +30,7 @@ clean:
 	rm -rf bochsout.txt
 
 disasm: $(BINARY)
-	objdump -D $(BINARY) > $(BINDIR)/disasm.txt
+	objdump -M intel -f -D $(BINARY) > $(BINDIR)/disasm.txt
 
 grub-iso: $(ISO)
 
@@ -41,7 +41,7 @@ $(ISO): $(BINARY)
 
 qemu: $(BINARY)
 	@echo "QEMU  $(BINARY)"
-	qemu-system-i386 -m 128M -s -kernel $(BINARY)
+	qemu-system-i386 -no-reboot -d int -m 128M -s -kernel $(BINARY)
 
 bochs: $(ISO)
 	@echo "BOCHS $(ISO)"

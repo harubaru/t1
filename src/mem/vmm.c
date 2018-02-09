@@ -1,4 +1,3 @@
-#include <tty/tty.h>
 #include <mem/vmm.h>
 
 extern uint32_t __end_symbol;
@@ -136,8 +135,8 @@ void *vmm_map(void *addr)
 
 void *vmm_malloc(uint32_t size)
 {
-	void *ret = pmm_malloc(size);
-	(void)vmm_map(ret);
+	void *ret = pmm_malloc_a(size);
+	ret = vmm_map(ret);
 
 	return ret;
 }

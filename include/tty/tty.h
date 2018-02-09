@@ -27,6 +27,8 @@ void tty_init(enum tty_color fg, enum tty_color bg);
 void tty_putc(char c, enum tty_color fg, enum tty_color bg);
 void tty_puts(char *c, enum tty_color fg, enum tty_color bg);
 void tty_printf(char *str, ...);
+enum tty_color tty_default_fg(void);
+enum tty_color tty_default_bg(void);
 
 #endif
 

@@ -159,3 +159,12 @@ void tty_printf(char *str, ...)
 	va_end(ap);
 }
 
+enum tty_color tty_default_fg(void)
+{
+	return default_fg;
+}
+
+enum tty_color tty_default_bg(void)
+{
+	return default_bg;
+}

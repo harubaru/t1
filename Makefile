@@ -50,7 +50,7 @@ bochs: $(ISO)
 
 %.o: %.c
 	@echo "CC  $<"
-	$(CC) -m32 -Iinclude -Wall -Wextra -O0 -ffreestanding -fno-asynchronous-unwind-tables -c $< -o $@
+	$(CC) -D__KVERSION__='"$(VERSION)"' -m32 -Iinclude -Wall -Wextra -O0 -ffreestanding -fno-asynchronous-unwind-tables -c $< -o $@
 
 %.o: %.asm
 	@echo "AS  $<"

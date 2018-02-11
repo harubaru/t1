@@ -11,8 +11,8 @@
 
 extern void __gdt_init(void);
 
-#define OK tty_puts(" SUCCESS!\n", tty_default_bg(), TTY_LIGHT_GREEN);
-#define FAILED tty_puts(" FAILED!\n", tty_default_bg(), TTY_LIGHT_RED);
+#define OK tty_puts(" SUCCESS \n", tty_default_bg(), TTY_LIGHT_GREEN);
+#define FAILED tty_puts(" FAILED \n", tty_default_bg(), TTY_LIGHT_RED);
 
 void init_arch(struct multiboot_info *mb)
 {
@@ -31,7 +31,7 @@ void init_arch(struct multiboot_info *mb)
 void init(struct multiboot_info *mb)
 {
 	tty_init(TTY_WHITE, TTY_BLACK);
-	tty_printf("Kernel version %s\n", __KVERSION__);
+	tty_printf("T1 Kernel version %s\n", __KVERSION__);
 	init_arch(mb);
 
 	return;

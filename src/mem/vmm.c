@@ -71,7 +71,7 @@ static void init_pt(uint32_t idx, page_directory_t *pd)
 
 void vmm_init(void *end)
 {
-	uint32_t i;
+	uint32_t i = 0;
 
 	pmm_init(&__end_symbol, end);
 
@@ -84,7 +84,7 @@ void vmm_init(void *end)
 		i += 0x1000;
 	}
 
-	vmm_switch_pd(kern_pd->pd);
+	__load_tlb((uint32_t)kern_pd->pd);
 	__enable_paging();
 }
 
@@ -112,8 +112,8 @@ void vmm_pd_free(page_directory_t *pd)
 
 void *vmm_map(void *addr)
 {
-	uint32_t pd_idx = (uint32_t)addr / 0x1000;
-	uint32_t pt_idx = (uint32_t)addr / 0x400;
+	uint32_t pd_idx = (uint32_t)addr >> 22;
+	uint32_t pt_idx = (uint32_t)addr >> 12 & 0x03FF;
 
 	uint32_t tmp;
 	uint32_t *pt = curr_pd->pt[pt_idx];
@@ -135,7 +135,7 @@ void *vmm_map(void *addr)
 
 void *vmm_malloc(uint32_t size)
 {
-	void *ret = pmm_malloc_a(size);
+	void *ret = (void *)((uint32_t)pmm_malloc_a(size) >> 12);
 	ret = vmm_map(ret);
 
 	return ret;

@@ -90,7 +90,7 @@ void pmm_init(void *start, void *end)
 	main_block = init_block;
 }
 
-void *pmm_malloc_imp(uint32_t sz, int align, void *ptr)
+void *pmm_malloc_imp(uint32_t sz, int align, uint32_t *ptr)
 {
 	uintptr_t tmp = 0;
 
@@ -110,14 +110,14 @@ void *pmm_malloc_imp(uint32_t sz, int align, void *ptr)
 		tmp &= (uintptr_t)0xFFFF000;
 		tmp += (uintptr_t)0x1000;
 		block = (block_t *)tmp;
-	} else if (ptr) {
-		ptr = block;
+	} if (ptr) {
+		*ptr = (uint32_t) block;
 	}
 
 	return block;
 }
 
-void *pmm_malloc_ap(uint32_t sz, void *ptr)
+void *pmm_malloc_ap(uint32_t sz, uint32_t *ptr)
 {
 	return pmm_malloc_imp(sz, 1, ptr);
 }
@@ -142,4 +142,3 @@ void pmm_free(void *addr)
 
 	merge_block(main_block, block);
 }
-

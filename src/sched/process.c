@@ -18,7 +18,7 @@ process_t *process_init(void (*entry_point)(void), char *name)
 	proc->regs.ebp = proc->regs.esp + 0x1000;
 	proc->regs.eip = (uint32_t)entry_point;
 	proc->state = PROCESS_RUNNING;
-//	proc->pid = sched_last_pid();
+	proc->pid = sched_pid_alloc();
 	proc->name = name;
 
 	proc->next = NULL;

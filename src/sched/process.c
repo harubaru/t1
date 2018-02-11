@@ -17,15 +17,29 @@ process_t *process_init(void (*entry_point)(void), char *name)
 	proc->regs.esp = (uint32_t)vmm_malloc(0x1000);
 	proc->regs.ebp = proc->regs.esp + 0x1000;
 	proc->regs.eip = (uint32_t)entry_point;
-	proc->regs.cr3 = (uint32_t)proc->pd->pd;
+	proc->state = PROCESS_RUNNING;
 //	proc->pid = sched_last_pid();
 	proc->name = name;
+
+	proc->next = NULL;
+	proc->prev = NULL;
 
 	return proc;
 }
 
-void process_kill(process_t *proc)
+void process_force_kill(process_t *proc)
 {
-	vmm_free_pd(proc->pd);
-	vmm_free((uint32_t *)proc->regs.esp);
+	if (proc) {
+		vmm_free_pd(proc->pd);
+		vmm_free((uint32_t *)proc->regs.esp);
+		vmm_free((uint32_t *)proc);
+	}
+}
+
+void process_try_kill(process_t *proc)
+{
+	if (proc) {
+		if (proc->state == PROCESS_ZOMBIE)
+			process_force_kill(proc);
+	}
 }

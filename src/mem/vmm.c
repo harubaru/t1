@@ -71,19 +71,14 @@ static void init_pt(uint32_t idx, page_directory_t *pd)
 
 void vmm_init(void *end)
 {
-	uint32_t i = 0;
-
 	pmm_pfa_init((uint32_t)end - (uint32_t)&__end_symbol);
 	pmm_init(&__end_symbol, end);
 
 	kern_pd = vmm_init_pd();
 	curr_pd = kern_pd;
 
-	// map 4 megs of memory
-	while (i < 0x4000) {
-		(void)vmm_map((void *)i);
-		i += 0x1000;
-	}
+	// map 20 megs of memory
+	vmm_identity_map((void *)0x000000, (void *)0x1400000);
 
 	__load_tlb((uint32_t)kern_pd->pd);
 	__enable_paging();
@@ -117,7 +112,7 @@ void *vmm_map(void *addr)
 	uint32_t pt_idx = (uint32_t)addr >> 12 & 0x03FF;
 
 	uint32_t tmp;
-	uint32_t *pt = curr_pd->pt[pt_idx];
+	uint32_t *pt = curr_pd->pt[pd_idx];
 
 	if (!pt) // if pt is null
 		init_pt(pt_idx, curr_pd);
@@ -133,6 +128,15 @@ void *vmm_map(void *addr)
 	__flush_tlb();
 
 	return (void *)tmp;
+}
+
+void vmm_identity_map(void *from, void *to)
+{
+	uint32_t i = (uint32_t)from;
+	while (i < (uint32_t)to) {
+		(void)vmm_map(i);
+		i += 0x1000;
+	}
 }
 
 void *vmm_malloc(uint32_t size)

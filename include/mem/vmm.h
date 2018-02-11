@@ -19,6 +19,7 @@ void vmm_switch_pd(void *pd);
 void vmm_copy_pd(page_directory_t *dst, page_directory_t *src);
 void vmm_pd_free(page_directory_t *pd);
 void *vmm_map(void *addr);
+void vmm_identity_map(void *from, void *to);
 void *vmm_malloc(uint32_t size);
 void vmm_free(uint32_t *addr);
 

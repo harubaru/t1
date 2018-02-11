@@ -11,4 +11,8 @@ void *pmm_malloc_a(uint32_t sz);
 void *pmm_malloc(uint32_t sz);
 void pmm_free(void *addr);
 
+void pmm_pfa_init(unsigned long mem_size);
+unsigned long pmm_pfa_allocate(void);
+void pmm_pfa_free(unsigned long frame);
+
 #endif

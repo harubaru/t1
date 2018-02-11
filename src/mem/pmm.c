@@ -142,3 +142,37 @@ void pmm_free(void *addr)
 
 	merge_block(main_block, block);
 }
+
+extern unsigned char __end_symbol;
+unsigned char *bitmap;
+unsigned long total_blocks, bitmap_size;
+
+void pmm_pfa_init(unsigned long mem_size)
+{
+	bitmap = &__end_symbol;
+
+	total_blocks = mem_size / 0x1000;
+	bitmap_size = total_blocks / 8;
+		
+	if (bitmap_size * 8 < total_blocks)
+		bitmap_size++;
+}
+
+unsigned long pmm_pfa_allocate(void)
+{
+	unsigned long i;
+	for (i = 0; i < total_blocks; i++) {
+		if(!((bitmap[i/8] >> (i % 8)) & 1)) {
+			bitmap[i/8] |= (1 << (i % 8));
+			return (i * 0x1000) + ((((uint32_t)&__end_symbol) & 0xFFFF000));
+		}
+	}
+
+	return 0xFFFFFFFF;
+}
+
+void pmm_pfa_free(unsigned long frame)
+{
+	frame /= 0x1000;
+	bitmap[frame/8] &= ~(1 << (frame % 8));
+}

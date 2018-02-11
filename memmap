@@ -34,4 +34,5 @@ SECTIONS
 	}
 
 	__end_symbol = .;
+	__end_symbol = ALIGN(4K);
 }

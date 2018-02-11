@@ -73,6 +73,7 @@ void vmm_init(void *end)
 {
 	uint32_t i = 0;
 
+	pmm_pfa_init((uint32_t)end - (uint32_t)&__end_symbol);
 	pmm_init(&__end_symbol, end);
 
 	kern_pd = vmm_init_pd();
@@ -124,9 +125,10 @@ void *vmm_map(void *addr)
 		return (void *)pt[pt_idx];
 
 	pt = curr_pd->pt[pt_idx];
-	pt[pt_idx] = (uint32_t)pmm_malloc_ap(sizeof(uint32_t), &tmp) | 0x3;
+	tmp = pmm_pfa_allocate();
+	pt[pt_idx] = tmp | 3;
 
-	curr_pd->pd[pd_idx] = ((uint32_t)pt[pt_idx]) | 3; // set page directory entry
+	curr_pd->pd[pd_idx] = ((uint32_t)&pt[pt_idx]) | 3; // set page directory entry
 
 	__flush_tlb();
 

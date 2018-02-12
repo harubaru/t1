@@ -1,5 +1,7 @@
 #include <sched/process.h>
 
+extern unsigned long sched_pid_alloc(void);
+
 process_t *process_init(void (*entry_point)(void), char *name)
 {
 	process_t *proc = vmm_malloc(sizeof(process_t));

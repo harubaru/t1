@@ -134,7 +134,7 @@ void vmm_identity_map(void *from, void *to)
 {
 	uint32_t i = (uint32_t)from;
 	while (i < (uint32_t)to) {
-		(void)vmm_map(i);
+		(void)vmm_map((void *)i);
 		i += 0x1000;
 	}
 }

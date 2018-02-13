@@ -1,4 +1,5 @@
 #include <boot/multiboot.h>
+#include <cpu/cpuid.h>
 #include <cpu/idt.h>
 #include <cpu/tss.h>
 #include <cpu/pic.h>
@@ -24,6 +25,9 @@ void init_arch(struct multiboot_info *mb)
 	idt_init();
 	pic_init();
 	irq_init();
+
+	cpuid_info_t info;
+	cpuid_get(&info);
 
 	OK
 }

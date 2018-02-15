@@ -19,7 +19,7 @@ process_t *process_init(void (*entry_point)(void), char *name)
 	proc->regs.esp = (uint32_t)vmm_malloc(0x1000);
 	proc->regs.ebp = proc->regs.esp + 0x1000;
 	proc->regs.eip = (uint32_t)entry_point;
-	proc->state = PROCESS_RUNNING;
+	proc->state = PROCESS_RUNABLE;
 	proc->pid = sched_pid_alloc();
 	proc->name = name;
 

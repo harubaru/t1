@@ -11,8 +11,9 @@ typedef struct process_regs {
 
 typedef enum process_state {
 	PROCESS_RUNNING = 0,
-	PROCESS_SLEEPING = 1,
-	PROCESS_ZOMBIE = 2
+	PROCESS_RUNABLE = 1,
+	PROCESS_SLEEPING = 2,
+	PROCESS_ZOMBIE = 3
 } process_state_t;
 
 typedef struct process {

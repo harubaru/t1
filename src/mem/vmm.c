@@ -141,10 +141,7 @@ void vmm_identity_map(void *from, void *to)
 
 void *vmm_malloc(uint32_t size)
 {
-	void *ret = (void *)((uint32_t)pmm_malloc_a(size) >> 12);
-	ret = vmm_map(ret);
-
-	return ret;
+	return pmm_malloc(size);
 }
 
 void vmm_free(uint32_t *addr)

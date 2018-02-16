@@ -45,8 +45,7 @@ qemu: $(BINARY)
 
 bochs: $(ISO)
 	@echo "BOCHS $(ISO)"
-	bochs -f bochsrc.txt
-	mv bochsout.txt $(BINDIR)
+	bochs -f bochsrc.txt -log $(BINDIR)/bochsout.txt -dbglog $(BINDIR)/bochsdbg.txt
 
 %.o: %.c
 	@echo "CC  $<"

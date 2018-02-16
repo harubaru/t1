@@ -1,4 +1,10 @@
+# Ignore binary files
 bin/*
 iso/boot/kernel
-!.keep
 *.o
+
+# Ignore text editor stuff
+.vscode/*
+
+# Misc.
+!.keep

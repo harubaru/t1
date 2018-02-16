@@ -1,5 +1,7 @@
 #include <sched/sched.h>
 
+extern void sched_jump(unsigned long eip);
+
 static process_t *curr = NULL;
 static unsigned long pid = 0;
 
@@ -34,4 +36,31 @@ void sched_remove(process_t *proc)
 unsigned long sched_pid_alloc(void)
 {
 	return pid++;
+}
+
+void sched_step(void)
+{
+	if (curr && curr->next) {
+		switch (curr->state) {
+		case PROCESS_RUNNING:
+			PANIC("trying to schedule a running process!");
+		case PROCESS_RUNABLE:
+			curr->state = PROCESS_RUNNING;
+			sched_jump(curr->regs.eip);
+			curr->state = PROCESS_RUNABLE;
+			break;
+		case PROCESS_SLEEPING:
+			// do nothing and let it sleep
+			break;
+		case PROCESS_ZOMBIE:
+			curr = curr->next;
+			sched_remove(curr->prev);
+			return;
+		default:
+			PANIC("cannot handle unknown process state!");
+		}
+		curr = curr->next;
+	} else {
+		PANIC("no more processes to schedule!");
+	}
 }

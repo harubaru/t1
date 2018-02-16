@@ -9,6 +9,7 @@
 #include <tty/tty.h>
 #include <mem/vmm.h>
 #include <sched/process.h>
+#include <sched/sched.h>
 
 extern void __gdt_init(void);
 
@@ -32,11 +33,21 @@ void init_arch(struct multiboot_info *mb)
 	OK
 }
 
+void idle(void)
+{
+	asm ("nop");
+}
+
 void init(struct multiboot_info *mb)
 {
 	tty_init(TTY_WHITE, TTY_BLACK);
 	tty_printf("T1 Kernel version %s\n", __KVERSION__);
 	init_arch(mb);
+
+	sched_init(process_init(idle, "idle"));
+
+	for (;;)
+		sched_step();
 
 	return;
 }

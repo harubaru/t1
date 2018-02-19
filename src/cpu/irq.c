@@ -1,7 +1,5 @@
 #include <cpu/irq.h>
 
-#include <tty/tty.h>
-
 uint32_t irq_handlers[256];
 
 void irq_init(void)
@@ -25,8 +23,6 @@ void irq(uint32_t i)
 
 	if (handler != 0)
 		handler();
-	else
-		tty_printf("Unhandled IRQ: %d\n", i);
 
 	pic_ack(i);
 }

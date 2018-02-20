@@ -35,9 +35,8 @@ void init_arch(struct multiboot_info *mb)
 
 void idle(void)
 {
-	for (;;) {
-		asm ("nop");
-	}
+	tty_printf("a");
+	asm ("nop");
 }
 
 void init(struct multiboot_info *mb)
@@ -48,7 +47,8 @@ void init(struct multiboot_info *mb)
 
 	sched_init(process_init(idle, "idle"));
 
-	idle();
+	for (;;)
+		sched_step();
 
 	return;
 }

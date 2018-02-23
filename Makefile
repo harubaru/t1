@@ -1,5 +1,9 @@
-NAME    = kernel
-VERSION = 0.00
+# Makefile for T1 Kernel
+NAME    = t1
+MAJOR = 0
+PATCH = 1
+MINOR = 0
+VERSION = $(MAJOR).$(PATCH).$(MINOR)
 BINDIR = bin
 BINARYNAME = $(NAME)-$(VERSION)
 BINARY = $(BINDIR)/$(BINARYNAME)

@@ -11,6 +11,7 @@
 #include <sched/process.h>
 #include <sched/sched.h>
 
+extern void __simd_enable(void);
 extern void __gdt_init(void);
 
 #define OK tty_puts(" SUCCESS \n", tty_default_bg(), TTY_LIGHT_GREEN);
@@ -20,6 +21,7 @@ void init_arch(struct multiboot_info *mb)
 {
 	tty_printf("Initializing arch specific code... ");
 
+	__simd_enable();
 	__gdt_init();
 	vmm_init((void *)(mb->mem_upper + 2048));
 	tss_init();

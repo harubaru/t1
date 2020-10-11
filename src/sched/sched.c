@@ -44,6 +44,7 @@ void sched_step(void)
 		switch (curr->state) {
 		case PROCESS_RUNNING:
 			PANIC("trying to schedule a running process!");
+			break;
 		case PROCESS_RUNABLE:
 			curr->state = PROCESS_RUNNING;
 			sched_jump(curr->regs.eip);

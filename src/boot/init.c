@@ -23,22 +23,26 @@ void init_arch(struct multiboot_info *mb)
 
 	__simd_enable();
 	__gdt_init();
-	vmm_init((void *)(mb->mem_upper + 2048));
 	tss_init();
+	vmm_init((void *)(mb->mem_upper + 2048));
 	idt_init();
 	pic_init();
 	irq_init();
-
-	cpuid_info_t info;
-	cpuid_get(&info);
-
-	OK
 }
 
 void idle(void)
 {
 	tty_printf("a");
-	asm ("nop");
+	for (int i = 0; i < 0xffffff; i++)
+		asm ("nop");
+}
+
+void idleb(void)
+{
+	tty_printf("b");
+
+	for (int i = 0; i < 0xffffff; i++)
+		asm ("nop");
 }
 
 void init(struct multiboot_info *mb)
@@ -46,8 +50,10 @@ void init(struct multiboot_info *mb)
 	tty_init(TTY_WHITE, TTY_BLACK);
 	tty_printf("T1 Kernel version %s\n", __KVERSION__);
 	init_arch(mb);
+	OK
 
 	sched_init(process_init(idle, "idle"));
+	sched_add(process_init(idleb, "idleb"));
 
 	for (;;)
 		sched_step();
